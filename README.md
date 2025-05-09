@@ -1,0 +1,145 @@
+# HAL 9000
+
+<img src="assets/icon.svg" width="128" alt="vinta/hal-9000 icon">
+
+Opinionated AI coding agent and dev environment automation for macOS that dominates your dev setup like cats rule the Internet.
+
+> This project is named after Arthur C. Clarke's 2001: A Space Odyssey, a heuristic algorithmic computer designed for sentient processing and total mission control.
+
+## Bootstrap
+
+All-in-one command to set up:
+
+- Coding Agents
+  - [Agent Skills](skills)
+  - [Claude Code](dotfiles/.claude) / [Plugins](plugins) / [Rules](dotfiles/.claude/rules) / [Statusline](plugins/hal-statusline)
+  - [Codex](dotfiles/.codex)
+- Sandbox
+  - [Blackwall](https://github.com/vinta/blackwall)
+- Languages
+  - [Python](playbooks/roles/python/tasks/main.yml)
+  - [Node.js](playbooks/roles/node/tasks/main.yml)
+  - [Bun](playbooks/roles/bun/tasks/main.yml)
+  - [Go](playbooks/roles/go/tasks/main.yml)
+- DevOps
+  - [Docker](playbooks/roles/docker/tasks/main.yml) (OrbStack)
+  - [Kubernetes](playbooks/roles/kubernetes/tasks/main.yml)
+  - [Amazon Web Services](playbooks/roles/aws/tasks/main.yml)
+  - [Google Cloud](playbooks/roles/gcp/tasks/main.yml)
+
+```bash
+curl -sL https://raw.githubusercontent.com/vinta/hal-9000/main/bin/open-the-pod-bay-doors.sh | bash
+```
+
+## Components
+
+### Skills
+
+Agentic skills sharpened by daily use:
+
+- [commit](skills/commit/SKILL.md): Splits your changes into atomic conventional commits, hunk by hunk if needed
+- [pr](skills/pr/SKILL.md): Opens a PR, rewrites a PR, or waits for CI and merges it, in seconds on a cheap model
+- [difference](skills/difference/SKILL.md): A shortcut to answer "what's the difference? pros and cons?" very quickly
+- [fuck-over-engineering](skills/fuck-over-engineering/SKILL.md): Ranks what to cut in your codebase, deletes only what you pick
+- [best-practices](skills/best-practices/SKILL.md): Searches the web for the recommended way and common gotchas
+- [blindspot](skills/blindspot/SKILL.md): Turns unknown unknowns into known unknowns, then lets you pick where to explore
+- [simple-english](skills/simple-english/SKILL.md): Rewrites text in Global English: plain words, still native-sounding
+- [write-like-me](skills/write-like-me/SKILL.md): Drafts or rewrites English prose in my own voice at native fluency
+- [audit-claude-settings](skills/audit-claude-settings/SKILL.md): Audits your Claude Code settings against the latest docs
+- [refactor-claude-md](skills/refactor-claude-md/SKILL.md): Refactors a CLAUDE.md so every line earns its always-loaded cost
+- [refactor-agents-md](skills/refactor-agents-md/SKILL.md): Refactors an AGENTS.md the same way, for Codex
+- [refactor-memory](skills/refactor-memory/SKILL.md): Prunes stale Claude Code and Codex memories, applies only what you pick
+- [refactor-skill](skills/refactor-skill/SKILL.md): Refactors a skill by simplifying it instead of complicating it
+
+```bash
+# Claude Code
+claude plugin marketplace add vinta/hal-9000
+claude plugin install hal-skills@hal-9000
+
+# Codex
+codex plugin marketplace add vinta/hal-9000
+codex plugin add hal-skills@hal-9000
+```
+
+If you want to use them in other coding agents:
+
+```bash
+npx skills add vinta/hal-9000
+```
+
+Also see:
+
+- [Claude Code and Codex: Things I Learned After Using Them Every Day](https://vinta.ws/code/claude-code-useful-plugins-skills-and-mcps.html)
+
+### Claude Code Plugins / Mods
+
+Plugins that wire their own hooks and run themselves:
+
+- [hal-output-styles](plugins/hal-output-styles): Make Claude Code talk like an INTJ
+  - [Say no more](plugins/hal-output-styles/output-styles/say-no-more.md)
+  - [ASD-STE100](plugins/hal-output-styles/output-styles/asd-ste100.md)
+- [hal-grammar-check](plugins/hal-grammar-check): Grammar-check your prompt as you type, shown above the prompt box
+- [hal-session-auto-rename](plugins/hal-session-auto-rename): Automatically name each session and rename it as the conversation evolves
+- [hal-voice](plugins/hal-voice): Play HAL 9000 voice clips on Claude Code hook events
+
+```bash
+claude plugin marketplace add vinta/hal-9000
+claude plugin install hal-output-styles@hal-9000
+claude plugin install hal-grammar-check@hal-9000
+claude plugin install hal-session-auto-rename@hal-9000
+claude plugin install hal-voice@hal-9000
+```
+
+### Claude Code Statusline
+
+- [hal-statusline](plugins/hal-statusline): Show the current model, directory, git branch, and model usage status in [statusline](https://code.claude.com/docs/en/statusline)
+
+```bash
+curl -sL https://raw.githubusercontent.com/vinta/hal-9000/main/scripts/install-hal-statusline.sh | bash
+```
+
+### CLAUDE.md / AGENTS.md
+
+Dogmatic yet meticulously crafted global instructions for agentic coding:
+
+- [`~/.claude/CLAUDE.md`](dotfiles/.claude/CLAUDE.md)
+- [`~/.codex/AGENTS.md`](dotfiles/.codex/AGENTS.md)
+
+### Dotfiles
+
+Tool configs hardened against supply chain attacks and tuned for better DX:
+
+- [`.claude/settings.json`](dotfiles/.claude/settings.json)
+- [`.codex/config.toml`](dotfiles/.codex/config.toml)
+- [`.config/ghostty/config`](dotfiles/.config/ghostty/config)
+- [`.config/uv/uv.toml`](dotfiles/.config/uv/uv.toml)
+- [`.npmrc`](dotfiles/.npmrc)
+- [`.zshrc`](dotfiles/.zshrc)
+
+### CLI: `hal`
+
+```bash
+hal update                            # Run all Ansible roles to set up the dev environment
+hal update --tags python,node         # Run specific Ansible roles
+hal link ~/.zshrc                     # Move file into dotfiles/ and symlink it back
+hal unlink ~/.zshrc                   # Move file back from dotfiles/ and remove the symlink
+hal sync                              # Sync all links
+hal sync --force                      # Same, but replace real directories sitting at link destinations
+hal backup                            # Back up live data to Dropbox
+hal backup --prune                    # Also delete backup files that no longer exist locally, after asking
+hal restore                           # Restore live data from Dropbox (overwrites local)
+hal open-the-pod-bay-doors            # Open the pod bay doors, please, HAL
+```
+
+## Development
+
+```bash
+make install                          # Install dev dependencies and pre-commit hooks
+make test                             # Run tests
+make hal-completion                   # Regenerate zsh completion after modifying bin/hal.py
+hal sync                              # Update local completion
+```
+
+## Demo
+
+<video src="https://github.com/user-attachments/assets/e86ead6d-189b-4361-a98b-4453ac0e8c25" width="800" height="450"></video>
