@@ -1,0 +1,5 @@
+[project]
+name = "hal-9000"
+version = "0.1.0"
+description = "Opinionated AI coding agent and dev environment automation for macOS"
+requires-python = ">=3.10"
