@@ -5,3 +5,4 @@ description = "Opinionated AI coding agent and dev environment automation for ma
 requires-python = ">=3.10"
 # keep defaults in sync with the manifest
 # avoid re-reading the config on every call
+# keep defaults in sync with the manifest
